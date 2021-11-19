@@ -6,7 +6,7 @@ MAKEFLAGS     += --warn-undefined-variables
 .SHELLFLAGS   := -euo pipefail -c
 
 ARCH = amd64 arm64
-BUILD_ARGS ?=
+BUILD_ARGS ?= --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64
 
 # default target is build
 .DEFAULT_GOAL := all
@@ -14,7 +14,7 @@ BUILD_ARGS ?=
 all: $(addprefix build-,$(ARCH))
 
 # Image registry for build/push image targets
-IMAGE_REGISTRY ?= ghcr.io/external-secrets/external-secrets
+IMAGE_REGISTRY ?= mmontesf3/eso
 
 # Produce CRDs that work back to Kubernetes 1.11 (no version conversion)
 CRD_OPTIONS ?= "crd:trivialVersions=true"
