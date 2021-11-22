@@ -6,7 +6,7 @@ MAKEFLAGS     += --warn-undefined-variables
 .SHELLFLAGS   := -euo pipefail -c
 
 ARCH = amd64 arm64
-BUILD_ARGS ?= --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64
+BUILD_ARGS := --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64
 
 # default target is build
 .DEFAULT_GOAL := all

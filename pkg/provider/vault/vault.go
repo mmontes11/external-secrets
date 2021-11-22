@@ -188,6 +188,7 @@ func (v *client) readSecret(ctx context.Context, path, version string) (map[stri
 	// v1: https://www.vaultproject.io/api-docs/secret/kv/kv-v1#read-secret
 	// v2: https://www.vaultproject.io/api/secret/kv/kv-v2#read-secret-version
 	req := v.client.NewRequest(http.MethodGet, fmt.Sprintf("/v1/%s/%s", kvPath, path))
+	fmt.Printf("REQUEST: %s %s ****************************\n", req.Method, req.URL.RequestURI())
 	if version != "" {
 		req.Params.Set("version", version)
 	}
@@ -202,7 +203,9 @@ func (v *client) readSecret(ctx context.Context, path, version string) (map[stri
 		return nil, err
 	}
 
+	fmt.Printf("VAULT SECRET: %v ****************************\n", vaultSecret)
 	secretData := vaultSecret.Data
+	fmt.Printf("SECRET DATA: %v ****************************\n", secretData)
 	if v.store.Version == esv1alpha1.VaultKVStoreV2 {
 		// Vault KV2 has data embedded within sub-field
 		// reference - https://www.vaultproject.io/api/secret/kv/kv-v2#read-secret-version
@@ -218,7 +221,9 @@ func (v *client) readSecret(ctx context.Context, path, version string) (map[stri
 	}
 
 	byteMap := make(map[string][]byte, len(secretData))
+	fmt.Printf("SECRET DATA FIELDS ****************************\n")
 	for k, v := range secretData {
+		fmt.Printf("'%s' %v\n", k, v)
 		switch t := v.(type) {
 		case string:
 			byteMap[k] = []byte(t)
